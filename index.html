@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Creation Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('images/nature-product-backdrop-farm-sunlight.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center col-4" id="SignUpCard" style="height: 100vh; padding-top: 25vh;">
+        <div class="card p-4" style="width: 400px;">
+            <h3 class="text-center mt-2">Sign Up Here<hr></h3>
+            <form>
+                <div class="mb-3 text-center">
+                    <label for="txtEmail" class="form-label">Enter Email address</label>
+                    <input type="text" id="txtEmail" class="form-control w-50 offset-3" id="email" placeholder="JohnD1@gmail.com">
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="txtPassword" class="form-label">Enter Password</label>
+                    <input type="text" class="form-control w-50 offset-3" id="txtPassword" placeholder="Farmer123">
+                </div>
+                <div class="mb-3 text-center mx-auto">
+                    <label for="txtFirstName" class="form-label">Enter First Name</label>
+                    <input for="txtFirstName" type="text" class="form-control w-50 offset-3" id="txtFirstName" placeholder="John">
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="txtLastName" class="form-label">Enter Last Name</label>
+                    <input type="text" class="form-control w-50 offset-3" id="txtLastName" placeholder="Deere">
+                </div>
+                <div class="mb-3 text-center">
+                    <label for="txtClass" class="form-label">Enter Class</label>
+                    <input type="text" class="form-control w-50 offset-3" id="txtClass" placeholder="AG3500">
+                </div>
+                <div class="text-center placeholder-wave">
+                    <button type="button" id="btnCreateAcc" class="btn btn-success btn-md w-50 mt-2">
+                        <span class="placeholder"></span> <!-- Placeholder inside the button -->
+                        Create account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="padding-top: 58vh;">
+        <div id="alertMessage" class="alert alert-success mt-5 d-none col-6 mx-auto" role="alert"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+  
+    <script>
+            const strBaseUrl = "https://simplefarm.thesimplehomestead.com/api/"
+
+
+        
+           
+
+        $('#btnCreateAcc').on('click',function(results){
+            console.log($('#txtEmail').val())
+            console.log($('#txtPassword').val())
+            console.log($('#txtFirstName').val())
+            console.log($('#txtLastName').val())          
+            console.log($('#txtClass').val())
+
+            let strFirstName = $('#txtFirstName').val()
+            let strLastName = $('#txtLastName').val()
+            let strEmail = $('#txtEmail').val()
+            let strPassword = $('#txtPassword').val()
+            let strClass = $('#txtClass').val()
+
+            $.post(strBaseUrl + 'users.php',{FirstName:strFirstName,LastName:strLastName,Email:strEmail,Password:strPassword},function(results){
+            results = JSON.parse(results)
+            console.log(results)
+
+            if(results.Outcome == "New User Created"){
+                $('#alertMessage').removeClass('d-none');
+                $('#SignUpCard').addClass('d-none');
+                $('#alertMessage').text("Congratulations " + strFirstName + ", you have officially created an account. Remember to keep your password somewhere safe and do not share it with anyone. Just a reminder, your password is " + strPassword + ".");
+                
+                setTimeout(function() {
+                window.location.href = "http://127.0.0.1:5500/authenticationClassWork/Registration.html"; //Takes user to login page after 5 seconds. 1000 = 1 second
+            }, 5000);
+            }
+            else{
+                $('#alertMessage').removeClass('d-none')
+                $('#alertMessage').text("Make sure to enter all fields properly")
+            }
+        })
+        })
+
+
+
+    </script>
+
+   
+
+
+</body>
+</html>
